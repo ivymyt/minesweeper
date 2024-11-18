@@ -114,21 +114,27 @@ function App() {
     setRows(nextRows)
   }
 
+  const style = {
+    width: (34 * config.columns) + 'px',
+  }
+
   return (
     <>
-    <h1>
-      {gameState === GameState.New && "Click to Start"}
-      {gameState === GameState.InProgress && "Keep Going…"}
-      {gameState === GameState.Loss && "You Lose!"}
-      {gameState === GameState.Win && "You Win!"}
-    </h1>
-    {
-      gameState === GameState.New ? (
-        <EmptyMineField numRows={config.rows} numColumns={config.columns} onStart={handleStart} />
-      ) : (
-        <MineField rows={rows} onFlag={handleFlag} onReveal={handleReveal} onRevealNeighbours={handleRevealNeighbours}/>
-      )
-    }
+      <h1>
+        {gameState === GameState.New && "Click to Start"}
+        {gameState === GameState.InProgress && "Keep Going…"}
+        {gameState === GameState.Loss && "You Lose!"}
+        {gameState === GameState.Win && "You Win!"}
+      </h1>
+      <main style={style}>
+      {
+        gameState === GameState.New ? (
+          <EmptyMineField numRows={config.rows} numColumns={config.columns} onStart={handleStart} />
+        ) : (
+          <MineField rows={rows} onFlag={handleFlag} onReveal={handleReveal} onRevealNeighbours={handleRevealNeighbours}/>
+        )
+      }
+      </main>
     </>
   )
 }

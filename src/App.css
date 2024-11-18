@@ -1,12 +1,18 @@
-html {
+h1 {
   font-family: sans-serif;
+  text-align: center;
+}
+
+main {
+  margin: 0 auto;
+  user-select: none;
 }
 
 .mine-field {
-  font-family: monospace;
   display: table;
   table-layout: fixed;
-  margin: 30px;
+  font-family: monospace;
+  text-align: center;
 }
 
 .mine-row {
@@ -18,13 +24,14 @@ html {
   width: 30px;
   height: 30px;
   line-height: 30px;
-  text-align: center;
-  border: 3px solid #ccc;
-  background: #eee;
+  border: 2px outset #ddd;
+  background: #ddd;
 }
 
 .mine-cell.revealed {
   background: #ccc;
+  border: 1px solid #aaa;
+  padding: 1px;
 }
 
 .mine-cell.mined {
