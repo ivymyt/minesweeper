@@ -1,11 +1,41 @@
-h1 {
+main {
+  position: relative;
+  margin: 0 auto;
+  border: 2px outset #ddd;
   font-family: sans-serif;
+  user-select: none;
+}
+
+h1,
+.alert-header {
+  margin: 0;
+  padding: 2px 5px;
+  background: #006;
+  color: #fff;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.alert {
+  position: absolute;
+  width: 100%;
+}
+
+.alert-inner {
+  margin: 40px auto;
+  max-width: 200px;
+  background: #ddd;
+  border: 2px outset #ddd;
+  box-shadow: 0 0 10px rgba(0,0,0,0.8);
   text-align: center;
 }
 
-main {
-  margin: 0 auto;
-  user-select: none;
+.alert-content {
+  padding: 5px 5px;
+}
+
+.alert-content button {
+  margin: 5px 0;
 }
 
 .mine-field {
