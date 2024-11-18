@@ -112,6 +112,9 @@ function App() {
     })
 
     setRows(nextRows)
+    if (hasWon(nextRows)) {
+      setGameState(GameState.Win)
+    }
   }
 
   const style = {
