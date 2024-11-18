@@ -105,9 +105,9 @@ function App() {
       return;
     }
 
-    loopNeighbours(position, nextRows, config, (neighbour: CellState) => {
+    loopNeighbours(position, nextRows, config, (neighbour: CellState, nextPosition: Position) => {
       if (!neighbour.flagged) {
-        neighbour.revealed = true
+        recurseReveal(nextPosition, nextRows)
       }
     })
 
