@@ -15,10 +15,11 @@ function App() {
     columns: 9,
     mines: 10,
   }
+  const config = defaultConfig
 
   const [ rows, setRows ] = useState(() => createEmptyMineData())
   const [ numFlagged, setNumFlagged ] = useState(0)
-  const [ config, setConfig ] = useState(defaultConfig)
+  // const [ config, setConfig ] = useState(defaultConfig)
   const [ gameState, setGameState ] = useState(GameState.New)
   const [ timeElapsed, setTimeElapsed ] = useState(0)
   const [ showAlert, setShowAlert ] = useState(false)
