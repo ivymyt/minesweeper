@@ -1,0 +1,32 @@
+html {
+  font-family: sans-serif;
+}
+
+.mine-field {
+  font-family: monospace;
+  display: table;
+  table-layout: fixed;
+  margin: 30px;
+}
+
+.mine-row {
+  display: table-row;
+}
+
+.mine-cell {
+  display: table-cell;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border: 3px solid #ccc;
+  background: #eee;
+}
+
+.mine-cell.revealed {
+  background: #ccc;
+}
+
+.mine-cell.mined {
+  /* background: #fcc; */
+}
