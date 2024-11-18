@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { sumBy } from 'lodash-es';
 import {
   createEmptyMineData, createMineData, loopNeighbours,
@@ -17,8 +17,20 @@ function App() {
   }
 
   const [ rows, setRows ] = useState(() => createEmptyMineData())
+  const [ numFlagged, setNumFlagged ] = useState(0)
   const [ config, setConfig ] = useState(defaultConfig)
-  const [ gameState, setGameState] = useState(GameState.New)
+  const [ gameState, setGameState ] = useState(GameState.New)
+  const [ timeElapsed, setTimeElapsed ] = useState(0)
+  const [ showAlert, setShowAlert ] = useState(false)
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (gameState === GameState.InProgress) {
+        setTimeElapsed((prevTimeElapsed) => prevTimeElapsed + 1);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [gameState]);
 
   function recurseReveal(position: Position, nextRows: Array<Array<CellState>>) {
     const cellState = nextRows[position.row][position.column]
@@ -43,6 +55,7 @@ function App() {
     recurseReveal(startPosition, nextRows)
     setGameState(GameState.InProgress)
     setRows(nextRows)
+    setTimeElapsed(0)
   }
 
   function handleFlag(position: Position) {
@@ -57,6 +70,7 @@ function App() {
     }
 
     cellState.flagged = !cellState.flagged
+    setNumFlagged((prevNumFlagged) => prevNumFlagged + (cellState.flagged ? 1 : -1))
     setRows(nextRows)
   }
 
@@ -75,11 +89,13 @@ function App() {
       cellState.revealed = true
       setRows(nextRows)
       setGameState(GameState.Loss)
+      setShowAlert(true)
     } else {
       recurseReveal(position, nextRows)
       setRows(nextRows)
       if (hasWon(nextRows)) {
         setGameState(GameState.Win)
+        setShowAlert(true)
       }
     }
   }
@@ -115,12 +131,17 @@ function App() {
     setRows(nextRows)
     if (hasWon(nextRows)) {
       setGameState(GameState.Win)
+      setShowAlert(true)
     }
   }
 
   function handleRestart(event: React.MouseEvent) {
     event.stopPropagation()
     setGameState(GameState.New)
+  }
+
+  function handleHideAlert() {
+    setShowAlert(false)
   }
 
   const style = {
@@ -130,16 +151,26 @@ function App() {
   return (
     <>
       <main style={style}>
-        <h1>Minesweeper</h1>
-        { gameState === GameState.Loss && (
-          <Alert>
-            <div>You Lose!</div>
-            <button onClick={handleRestart}>Play Again</button>
-          </Alert>
-        )}
-        { gameState === GameState.Win && (
-          <Alert>
-            <div>You Win!</div>
+        <header>
+          <div className="title-bar">
+            <h1>Minesweeper</h1>
+            <button onClick={handleRestart}>♻️</button>
+          </div>
+          <div className="status">
+            <div className="mines-remaining">{config.mines - numFlagged}</div>
+            <div className="game-state">
+              { gameState === GameState.New && "🙂" }
+              { gameState === GameState.InProgress && "🙂" }
+              { gameState === GameState.Loss && "😵" }
+              { gameState === GameState.Win && "😎" }
+            </div>
+            <div className="time-elapsed">{timeElapsed}</div>
+          </div>
+        </header>
+        { showAlert && (
+          <Alert onClose={handleHideAlert}>
+            { gameState === GameState.Loss && <div>You Lose!</div> }
+            { gameState === GameState.Win && <div>You Win!</div> }
             <button onClick={handleRestart}>Play Again</button>
           </Alert>
         )}
