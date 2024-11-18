@@ -37,6 +37,14 @@ function convertToFlatPosition(config: MineFieldConfig, row: number, column: num
   return row * config.columns + column
 }
 
+function loopNeighbours(position: Position, nextRows: Array<Array<CellState>>, config: MineFieldConfig, callback: Function) {
+  for (let i = Math.max(0, position.row-1); i < Math.min(position.row+2, config.rows); i++) {
+    for (let j = Math.max(0, position.column-1); j < Math.min(position.column+2, config.columns); j++) {
+      callback(nextRows[i][j], {row: i, column: j})
+    }
+  }
+}
+
 function createEmptyMineData(): Array<Array<CellState>> {
   const cellState: CellState = {
     mined: false,
@@ -86,5 +94,5 @@ function createMineData(config: MineFieldConfig, startPosition: Position): Array
   )
 }
 
-export { createEmptyMineData, createMineData, convertToFlatPosition, GameState }
+export { createEmptyMineData, createMineData, loopNeighbours, GameState }
 export type { CellState, MineFieldConfig, Position }

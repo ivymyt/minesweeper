@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { sumBy } from 'lodash-es';
 import {
-  createEmptyMineData, createMineData,
+  createEmptyMineData, createMineData, loopNeighbours,
   CellState, GameState, MineFieldConfig, Position
 } from './utils.tsx'
 import EmptyMineField from './components/EmptyMineField.tsx'
@@ -24,13 +24,11 @@ function App() {
     cellState.revealed = true
 
     if (cellState.minedNeighbours === 0) {
-      for (let i = Math.max(0, position.row-1); i < Math.min(position.row+2, config.rows); i++) {
-        for (let j = Math.max(0, position.column-1); j < Math.min(position.column+2, config.columns); j++) {
-          if (!nextRows[i][j].revealed) {
-            recurseReveal({row: i, column: j}, nextRows)
-          }
+      loopNeighbours(position, nextRows, config, (neighbour: CellState, nextPosition: Position) => {
+        if (!neighbour.revealed) {
+          recurseReveal(nextPosition, nextRows)
         }
-      }
+      })
     }
   }
 
@@ -97,25 +95,21 @@ function App() {
     }
 
     let numFlagged = 0
-    for (let i = Math.max(0, position.row-1); i < Math.min(position.row+2, config.rows); i++) {
-      for (let j = Math.max(0, position.column-1); j < Math.min(position.column+2, config.columns); j++) {
-        if (nextRows[i][j].flagged) {
-          numFlagged++
-        }
+    loopNeighbours(position, nextRows, config, (neighbour: CellState) => {
+      if (neighbour.flagged) {
+        numFlagged++
       }
-    }
+    })
 
     if (numFlagged !== cellState.minedNeighbours) {
       return;
     }
 
-    for (let i = Math.max(0, position.row-1); i < Math.min(position.row+2, config.rows); i++) {
-      for (let j = Math.max(0, position.column-1); j < Math.min(position.column+2, config.columns); j++) {
-        if (!nextRows[i][j].flagged) {
-          nextRows[i][j].revealed = true
-        }
+    loopNeighbours(position, nextRows, config, (neighbour: CellState) => {
+      if (!neighbour.flagged) {
+        neighbour.revealed = true
       }
-    }
+    })
 
     setRows(nextRows)
   }
