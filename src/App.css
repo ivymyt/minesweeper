@@ -1,10 +1,20 @@
+html {
+  background: #00807f;
+}
+
 main {
   position: relative;
-  margin: 0 auto;
-  border: 2px outset #ddd;
+  margin: 30px auto;
   font-family: sans-serif;
   user-select: none;
   font-size: 16px;
+}
+
+main,
+.alert-inner {
+  background: #ddd;
+  border: 2px outset #ddd;
+  box-shadow: 0 0 10px rgba(0,0,0,0.8);
 }
 
 button {
@@ -46,9 +56,6 @@ h1 {
   .alert-inner {
     margin: 40px auto;
     max-width: 200px;
-    background: #ddd;
-    border: 2px outset #ddd;
-    box-shadow: 0 0 10px rgba(0,0,0,0.8);
     text-align: center;
   }
 
@@ -62,7 +69,6 @@ h1 {
 
 .status {
   position: relative;
-  background: #ddd;
   height: 26px;
   border-bottom: 2px outset #ddd;
 }
@@ -115,7 +121,6 @@ h1 {
       height: 30px;
       line-height: 30px;
       border: 2px outset #ddd;
-      background: #ddd;
     }
 
     .mine-cell.revealed {
