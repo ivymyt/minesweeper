@@ -56,7 +56,6 @@ function App() {
     recurseReveal(startPosition, nextRows)
     setGameState(GameState.InProgress)
     setRows(nextRows)
-    setTimeElapsed(0)
   }
 
   function handleFlag(position: Position) {
@@ -125,7 +124,13 @@ function App() {
 
     loopNeighbours(position, nextRows, config, (neighbour: CellState, nextPosition: Position) => {
       if (!neighbour.flagged) {
-        recurseReveal(nextPosition, nextRows)
+        if (neighbour.mined) {
+          neighbour.revealed = true
+          setGameState(GameState.Loss)
+          setShowAlert(true)
+        } else {
+          recurseReveal(nextPosition, nextRows)
+        }
       }
     })
 
@@ -139,6 +144,9 @@ function App() {
   function handleRestart(event: React.MouseEvent) {
     event.stopPropagation()
     setGameState(GameState.New)
+    setTimeElapsed(0)
+    setNumFlagged(0)
+    setShowAlert(false)
   }
 
   function handleHideAlert() {
